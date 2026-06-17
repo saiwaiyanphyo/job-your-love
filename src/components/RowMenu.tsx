@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { MoreHorizontal } from "lucide-react";
 
 const MENU_WIDTH = 128;
 
@@ -67,7 +68,7 @@ export function RowMenu({
         className="rounded p-1 text-ink3 hover:bg-hover hover:text-ink"
         aria-label="Row actions"
       >
-        ⋯
+        <MoreHorizontal className="h-4 w-4" />
       </button>
 
       {open &&

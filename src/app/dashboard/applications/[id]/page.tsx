@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { getEntry } from "@/lib/data";
 import { statusMeta } from "@/lib/types";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -64,9 +65,10 @@ export default async function ApplicationDetailPage({
       <div className="flex items-center justify-between">
         <Link
           href="/dashboard/applications"
-          className="text-[13px] text-ink2 hover:text-ink"
+          className="inline-flex items-center gap-1.5 text-[13px] text-ink2 hover:text-ink"
         >
-          ← Back to Applications
+          <ArrowLeft className="h-4 w-4" />
+          Back to Applications
         </Link>
         <div className="flex items-center gap-2">
           <Link
@@ -161,9 +163,10 @@ export default async function ApplicationDetailPage({
                 href={d.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] font-medium text-status-applied hover:underline"
+                className="inline-flex items-center gap-1 text-[13px] font-medium text-status-applied hover:underline"
               >
-                {d.url} ↗
+                {d.url}
+                <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </Section>
           )}

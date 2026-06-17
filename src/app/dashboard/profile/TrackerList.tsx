@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { Plus, X } from "lucide-react";
 import {
   setActiveTracker,
   renameTracker,
@@ -45,7 +46,8 @@ export function TrackerList({
           href="/onboarding"
           className="inline-flex items-center gap-1 rounded-lg border border-line px-3 py-1.5 text-[13px] font-medium text-ink hover:bg-hover"
         >
-          + Add
+          <Plus className="h-3.5 w-3.5" />
+          Add
         </Link>
       </div>
 
@@ -114,10 +116,10 @@ export function TrackerList({
                           )
                             startTransition(() => deleteTracker(t.id));
                         }}
-                        className="rounded-md px-2 py-1 text-xs text-ink3 hover:bg-hover hover:text-status-rejected"
+                        className="grid h-7 w-7 place-items-center rounded-md text-ink3 hover:bg-hover hover:text-status-rejected"
                         aria-label="Delete tracker"
                       >
-                        ✕
+                        <X className="h-3.5 w-3.5" />
                       </button>
                     )}
                   </>

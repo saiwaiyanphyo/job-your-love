@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
+import { Briefcase, GraduationCap, Sparkles, Check, type LucideIcon } from "lucide-react";
 import { TEMPLATES } from "@/lib/templates";
 import { createTrackerFromTemplate } from "@/app/dashboard/actions";
 
-const ICONS: Record<string, string> = {
-  "job-search": "💼",
-  internship: "🎓",
-  custom: "✦",
+const ICONS: Record<string, LucideIcon> = {
+  "job-search": Briefcase,
+  internship: GraduationCap,
+  custom: Sparkles,
 };
 
 function StartButton({ label }: { label: string }) {
@@ -35,6 +36,7 @@ export function TemplateChooser() {
       <div className="grid gap-4 md:grid-cols-3">
         {TEMPLATES.map((t) => {
           const active = selected === t.key;
+          const Icon = ICONS[t.key];
           return (
             <button
               key={t.key}
@@ -46,8 +48,8 @@ export function TemplateChooser() {
                   : "border-line hover:border-line2"
               }`}
             >
-              <span className="grid h-10 w-10 place-items-center rounded-lg bg-hover text-lg">
-                {ICONS[t.key]}
+              <span className="grid h-10 w-10 place-items-center rounded-lg bg-hover text-ink">
+                <Icon className="h-5 w-5" strokeWidth={2} />
               </span>
               <h3 className="mt-4 text-lg font-semibold text-ink">{t.name}</h3>
               <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
@@ -59,8 +61,8 @@ export function TemplateChooser() {
                     key={f}
                     className="flex items-center gap-2 text-[13px] text-ink"
                   >
-                    <span className="grid h-4 w-4 place-items-center rounded-full bg-status-accepted/15 text-[10px] text-status-accepted">
-                      ✓
+                    <span className="grid h-4 w-4 flex-none place-items-center rounded-full bg-status-accepted/15 text-status-accepted">
+                      <Check className="h-2.5 w-2.5" strokeWidth={3} />
                     </span>
                     {f}
                   </li>

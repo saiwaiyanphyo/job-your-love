@@ -1,25 +1,26 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Layers, Bell, TrendingUp, Clock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 const FEATURES = [
   {
-    glyph: "✓",
+    Icon: Layers,
     title: "Track Everything",
     body: "One central place for all your applications. From wishlist to offer, keep every opportunity organized and accessible.",
   },
   {
-    glyph: "🔔",
+    Icon: Bell,
     title: "Stay Organized",
     body: "Status tracking, reminders, and notes all in one place. Never lose track of where you stand with any application.",
   },
   {
-    glyph: "↗",
+    Icon: TrendingUp,
     title: "Smart Analytics",
     body: "Get insights into your job search pipeline. See what's working, where you're stuck, and how to improve your conversion rate.",
   },
   {
-    glyph: "◇",
+    Icon: Clock,
     title: "Never Miss a Beat",
     body: "Follow-up reminders and a clear timeline keep you on top of every deadline, interview, and next step.",
   },
@@ -107,8 +108,8 @@ export default async function Home() {
         <div className="grid gap-4 sm:grid-cols-2">
           {FEATURES.map((f) => (
             <div key={f.title} className="rounded-md bg-sidebar p-4">
-              <span className="grid h-9 w-9 place-items-center rounded-sm bg-ink text-base text-white">
-                {f.glyph}
+              <span className="grid h-9 w-9 place-items-center rounded-sm bg-ink text-white">
+                <f.Icon className="h-[18px] w-[18px]" strokeWidth={2} />
               </span>
               <h3 className="mt-3 text-[15px] font-semibold text-ink">
                 {f.title}
