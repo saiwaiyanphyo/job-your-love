@@ -30,7 +30,7 @@ export function Sidebar({ email }: { email: string }) {
           J
         </span>
         <span className="text-[15px] font-semibold tracking-tight text-ink">
-          Job Tracker
+          Job Your Love
         </span>
       </div>
 

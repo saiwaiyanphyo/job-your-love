@@ -21,7 +21,7 @@ export function AuthShell({
           <span className="grid h-8 w-8 place-items-center rounded-md bg-ink text-sm font-bold text-white">
             J
           </span>
-          Job Tracker
+          Job Your Love
         </Link>
 
         <div className="rounded-xl border border-line bg-white p-7">

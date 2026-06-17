@@ -42,7 +42,7 @@ export default async function Home() {
             J
           </span>
           <span className="text-[22px] font-semibold tracking-tight text-ink">
-            Job Tracker
+            Job Your Love
           </span>
         </div>
       </header>
