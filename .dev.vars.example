@@ -1,0 +1,4 @@
+# Used by `wrangler` / `opennextjs-cloudflare preview` for local Worker runtime.
+# Copy to `.dev.vars` and fill in real values.
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key

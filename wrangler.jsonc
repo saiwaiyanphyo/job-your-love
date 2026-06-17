@@ -1,0 +1,25 @@
+{
+  // Cloudflare Workers configuration for the OpenNext adapter.
+  // Docs: https://opennext.js.org/cloudflare
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "job-application-tracker",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+
+  // Public env values can be added here under "vars".
+  // Secrets (e.g. service role keys, if ever used) should be added with:
+  //   npx wrangler secret put <NAME>
+  //
+  // "vars": {
+  //   "NEXT_PUBLIC_SUPABASE_URL": "https://YOUR-PROJECT.supabase.co",
+  //   "NEXT_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key"
+  // }
+}
