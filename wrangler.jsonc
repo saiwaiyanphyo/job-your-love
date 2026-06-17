@@ -2,7 +2,7 @@
   // Cloudflare Workers configuration for the OpenNext adapter.
   // Docs: https://opennext.js.org/cloudflare
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "job-application-tracker",
+  "name": "job-your-love",
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat"],
