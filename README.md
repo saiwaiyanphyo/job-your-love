@@ -12,13 +12,13 @@ Built with **Next.js (App Router) + TypeScript**, **Tailwind CSS**, and **Supaba
 
 ## Screenshots
 
-![Landing page — value prop and feature highlights](https://github.com/user-attachments/assets/4d4e4a4c-2e2d-4fb6-a10f-a78b1e834855)
+![Landing page — value prop and feature highlights](slides/landing.png)
 *Landing page — value prop and feature highlights*
 
 ![Dashboard — stat cards and all-applications table](slides/dashboard.png)
 *Dashboard — stat cards and all-applications table*
 
-![Account settings — password change and tracker switching](slides/account-settings.png)
+![Account settings — password change and tracker switching](slides/profile.png)
 *Account settings — password change and tracker switching*
 
 ---
