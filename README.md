@@ -13,7 +13,8 @@ Built with **Next.js (App Router) + TypeScript**, **Tailwind CSS**, and **Supaba
 ## Screenshots
 ## Screenshots
 
-![Landing page — value prop and feature highlights](screenshots/landing.png)
+![Landing page — value prop and feature highlights](<img width="1598" height="944" alt="Screenshot 2026-07-07 at 10 55 53 AM" src="https://github.com/user-attachments/assets/4d4e4a4c-2e2d-4fb6-a10f-a78b1e834855" />
+)
 *Landing page — value prop and feature highlights*
 
 ![Dashboard — stat cards and all-applications table](screenshots/dashboard.png)
