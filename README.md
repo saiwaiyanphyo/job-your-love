@@ -11,8 +11,17 @@ Built with **Next.js (App Router) + TypeScript**, **Tailwind CSS**, and **Supaba
 ---
 
 ## Screenshots
+## Screenshots
 
-_Coming soon._
+![Landing page — value prop and feature highlights](screenshots/landing.png)
+*Landing page — value prop and feature highlights*
+
+![Dashboard — stat cards and all-applications table](screenshots/dashboard.png)
+*Dashboard — stat cards and all-applications table*
+
+![Account settings — password change and tracker switching](screenshots/account-settings.png)
+*Account settings — password change and tracker switching*
+
 
 ---
 
