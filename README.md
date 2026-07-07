@@ -1,8 +1,18 @@
 # Job Your Love — Job Application Tracker
 
-A full-stack, spreadsheet-style job application tracker. Every user gets their own tracker: an Excel-like grid where each row is a job application, with custom columns, inline editing, and a dashboard to see how the search is going at a glance.
+A private, spreadsheet-style job application tracker with per-user Row Level Security.
+
+**Live app:** [job-your-love.megiapps.workers.dev](https://job-your-love.megiapps.workers.dev/)
+
+Every user gets their own tracker: an Excel-like grid where each row is a job application, with custom columns, inline editing, and a dashboard to see how the search is going at a glance.
 
 Built with **Next.js (App Router) + TypeScript**, **Tailwind CSS**, and **Supabase** (auth + Postgres with Row Level Security), deployed on **Cloudflare Workers**.
+
+---
+
+## Screenshots
+
+_Coming soon._
 
 ---
 
