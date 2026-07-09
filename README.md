@@ -4,6 +4,8 @@ A private, spreadsheet-style job application tracker with per-user Row Level Sec
 
 **Live app:** [job-your-love.megiapps.workers.dev](https://job-your-love.megiapps.workers.dev/)
 
+**Project repo / download:** [github.com/saiwaiyanphyo/job-your-love](https://github.com/saiwaiyanphyo/job-your-love)
+
 Every user gets their own tracker: an Excel-like grid where each row is a job application, with custom columns, inline editing, and a dashboard to see how the search is going at a glance.
 
 Built with **Next.js (App Router) + TypeScript**, **Tailwind CSS**, and **Supabase** (auth + Postgres with Row Level Security), deployed on **Cloudflare Workers**.
