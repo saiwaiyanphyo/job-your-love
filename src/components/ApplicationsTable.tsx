@@ -3,6 +3,7 @@
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { MailPlus } from "lucide-react";
 import { TABLE_COLUMNS, type JobEntry, type StatusId } from "@/lib/types";
 import { deleteApplication, updateStatus } from "@/app/dashboard/actions";
 import { StatusSelect } from "./StatusSelect";
@@ -92,6 +93,13 @@ export function ApplicationsTable({
             <option value="company">Sort: Company</option>
             <option value="status">Sort: Status</option>
           </select>
+          <Link
+            href="/dashboard/import"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-white px-3.5 py-2 text-[13px] font-medium text-ink2 hover:bg-hover hover:text-ink"
+          >
+            <MailPlus className="h-4 w-4" />
+            Import Email
+          </Link>
           <Link
             href="/dashboard/new"
             className="inline-flex items-center gap-1.5 rounded-lg bg-ink px-3.5 py-2 text-[13px] font-medium text-white hover:opacity-90"

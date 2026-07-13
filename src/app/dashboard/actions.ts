@@ -8,8 +8,15 @@ import {
   requireUser,
   getActiveTracker,
 } from "@/lib/data";
+import { extractApplicationFromEmail } from "@/lib/ai/extract-application";
 import { getTemplate } from "@/lib/templates";
 import type { ApplicationData, StatusId } from "@/lib/types";
+
+export interface EmailImportState {
+  error?: string;
+  extracted?: ApplicationData;
+  emailText?: string;
+}
 
 async function setActiveCookie(id: string) {
   const cookieStore = await cookies();
@@ -154,4 +161,28 @@ export async function deleteApplication(id: string) {
   const { error } = await supabase.from("job_entries").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/dashboard");
+}
+
+// ---------------------------------------------------------------------------
+// AI email import
+// ---------------------------------------------------------------------------
+export async function importApplicationFromEmail(
+  _prev: EmailImportState,
+  formData: FormData
+): Promise<EmailImportState> {
+  await requireUser();
+
+  const emailText = String(formData.get("emailText") ?? "").trim();
+  try {
+    const extracted = await extractApplicationFromEmail(emailText);
+    return { extracted, emailText };
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Could not extract application details.",
+      emailText,
+    };
+  }
 }

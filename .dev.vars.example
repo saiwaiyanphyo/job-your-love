@@ -2,3 +2,8 @@
 # Copy to `.dev.vars` and fill in real values.
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+
+# AI email import — server-only
+AI_PROXY_URL=https://proxy.vibecode.tours
+AI_API_KEY=your-ai-proxy-key
+AI_MODEL=gpt-4o-mini

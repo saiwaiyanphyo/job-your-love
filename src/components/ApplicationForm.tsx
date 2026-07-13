@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { STATUSES, type ApplicationData } from "@/lib/types";
 import { FormSubmit } from "./FormSubmit";
