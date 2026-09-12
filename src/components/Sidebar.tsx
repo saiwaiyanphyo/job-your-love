@@ -8,6 +8,7 @@ import {
   CalendarIcon,
   GiftIcon,
   XCircleIcon,
+  FileTextIcon,
 } from "./icons";
 
 const NAV = [
@@ -16,6 +17,7 @@ const NAV = [
   { href: "/dashboard/interviews", label: "Interviews", Icon: CalendarIcon },
   { href: "/dashboard/offers", label: "Offers", Icon: GiftIcon },
   { href: "/dashboard/rejections", label: "Rejections", Icon: XCircleIcon },
+  { href: "/dashboard/resumes", label: "Resumes", Icon: FileTextIcon },
 ];
 
 export function Sidebar({ email }: { email: string }) {
