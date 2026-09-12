@@ -44,10 +44,23 @@ create table if not exists public.job_entries (
   updated_at  timestamptz not null default now()
 );
 
+-- A "resume" is one CV document belonging to a user.
+-- `data` holds the whole resume as JSONB (basics, experience, education,
+-- projects, skills) — see src/lib/resume/types.ts for the shape.
+create table if not exists public.resumes (
+  id          uuid        primary key default gen_random_uuid(),
+  user_id     uuid        not null references auth.users (id) on delete cascade,
+  title       text        not null default 'Untitled Resume',
+  data        jsonb       not null default '{}'::jsonb,
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
 -- Helpful indexes
 create index if not exists trackers_user_id_idx     on public.trackers (user_id);
 create index if not exists job_entries_tracker_idx  on public.job_entries (tracker_id);
 create index if not exists job_entries_user_id_idx  on public.job_entries (user_id);
+create index if not exists resumes_user_id_idx      on public.resumes (user_id);
 
 -- ---------------------------------------------------------------------------
 -- updated_at trigger
@@ -72,11 +85,17 @@ create trigger job_entries_set_updated_at
   before update on public.job_entries
   for each row execute function public.set_updated_at();
 
+drop trigger if exists resumes_set_updated_at on public.resumes;
+create trigger resumes_set_updated_at
+  before update on public.resumes
+  for each row execute function public.set_updated_at();
+
 -- ---------------------------------------------------------------------------
 -- Row Level Security
 -- ---------------------------------------------------------------------------
 alter table public.trackers    enable row level security;
 alter table public.job_entries enable row level security;
+alter table public.resumes     enable row level security;
 
 -- trackers: a user may only see/modify their own trackers --------------------
 drop policy if exists "trackers_select_own" on public.trackers;
@@ -127,4 +146,26 @@ create policy "job_entries_update_own"
 drop policy if exists "job_entries_delete_own" on public.job_entries;
 create policy "job_entries_delete_own"
   on public.job_entries for delete
+  using (auth.uid() = user_id);
+
+-- resumes: a user may only see/modify their own resumes -----------------------
+drop policy if exists "resumes_select_own" on public.resumes;
+create policy "resumes_select_own"
+  on public.resumes for select
+  using (auth.uid() = user_id);
+
+drop policy if exists "resumes_insert_own" on public.resumes;
+create policy "resumes_insert_own"
+  on public.resumes for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "resumes_update_own" on public.resumes;
+create policy "resumes_update_own"
+  on public.resumes for update
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists "resumes_delete_own" on public.resumes;
+create policy "resumes_delete_own"
+  on public.resumes for delete
   using (auth.uid() = user_id);

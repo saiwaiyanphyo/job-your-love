@@ -46,3 +46,33 @@ body {
   background: var(--text-tertiary);
   background-clip: content-box;
 }
+
+/* -------------------------------------------------------------------------
+   Print isolation for the resume PDF export.
+   Only the resume document is printed; everything else (sidebar, toolbar)
+   is hidden so "Save as PDF" produces a clean page.
+   ------------------------------------------------------------------------- */
+@media print {
+  @page {
+    margin: 0.5in;
+  }
+  body {
+    background: #ffffff;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .resume-print-root,
+  .resume-print-root * {
+    visibility: visible;
+  }
+  .resume-print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .resume-print-root .resume-doc {
+    padding: 0;
+  }
+}
