@@ -48,7 +48,7 @@ export default async function Home() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-8 px-6 pb-10 pt-4 sm:pb-8 sm:pt-10 lg:grid-cols-2 lg:gap-12">
+      <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-6 pb-10 pt-4 sm:pb-8 sm:pt-10 lg:grid-cols-2 lg:gap-12">
         <div>
           <h1 className="text-[34px] font-bold leading-[1.15] tracking-tight text-ink sm:text-5xl">
             Track every application,{" "}
