@@ -18,7 +18,7 @@ export default async function ResumesPage() {
   const resumes = await getResumes();
 
   return (
-    <div className="mx-auto max-w-4xl px-8 py-7">
+    <div className="mx-auto max-w-4xl px-4 py-5 md:px-8 md:py-7">
       <PageHeader
         title="Resumes"
         subtitle="Build a clean CV and export it to PDF."

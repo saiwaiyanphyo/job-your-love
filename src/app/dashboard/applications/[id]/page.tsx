@@ -61,7 +61,7 @@ export default async function ApplicationDetailPage({
   const meta = statusMeta(d.status);
 
   return (
-    <div className="mx-auto max-w-5xl px-8 py-7">
+    <div className="mx-auto max-w-5xl px-4 py-4 md:px-8 md:py-7">
       <div className="flex items-center justify-between">
         <Link
           href="/dashboard/applications"
@@ -89,8 +89,8 @@ export default async function ApplicationDetailPage({
         >
           {company.charAt(0).toUpperCase()}
         </span>
-        <div className="flex-1">
-          <div className="flex items-center gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="text-[22px] font-semibold tracking-tight text-ink">
               {d.position || company}
             </h1>

@@ -11,7 +11,7 @@ export default async function InterviewsPage() {
   );
 
   return (
-    <div className="px-8 py-7">
+    <div className="px-4 py-5 md:px-8 md:py-7">
       <PageHeader
         title="Interviews"
         subtitle="Applications in assessment, interviewing, or final rounds."

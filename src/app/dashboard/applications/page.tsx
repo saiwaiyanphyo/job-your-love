@@ -7,7 +7,7 @@ export default async function ApplicationsPage() {
   const entries = await getEntries(tracker.id);
 
   return (
-    <div className="px-8 py-7">
+    <div className="px-4 py-5 md:px-8 md:py-7">
       <PageHeader
         title="All Applications"
         subtitle={`${entries.length} application${

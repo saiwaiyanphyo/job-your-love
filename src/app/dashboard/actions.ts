@@ -104,6 +104,7 @@ function readApplication(formData: FormData): ApplicationData {
     url: normalizeUrl(get("url")),
     source: get("source"),
     description: get("description"),
+    notes: get("notes"),
     follow_up: get("follow_up"),
     contact_name: get("contact_name"),
     contact_email: get("contact_email"),

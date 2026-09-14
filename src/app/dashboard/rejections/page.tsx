@@ -8,7 +8,7 @@ export default async function RejectionsPage() {
   const entries = all.filter((e) => e.data.status === "rejected");
 
   return (
-    <div className="px-8 py-7">
+    <div className="px-4 py-5 md:px-8 md:py-7">
       <PageHeader
         title="Rejections"
         subtitle="Closed out — every no gets you closer to a yes."

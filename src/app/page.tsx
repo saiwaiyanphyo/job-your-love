@@ -36,37 +36,37 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-page">
       {/* Centered brand */}
-      <header className="flex justify-center px-6 py-8">
+      <header className="flex justify-center px-6 py-6 sm:py-8">
         <div className="flex items-center gap-2.5">
           <span className="grid h-8 w-8 place-items-center rounded-md bg-ink text-sm font-bold text-white">
             J
           </span>
-          <span className="text-[22px] font-semibold tracking-tight text-ink">
+          <span className="text-xl font-semibold tracking-tight text-ink sm:text-[22px]">
             Job Your Love
           </span>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-8 pt-10 lg:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl items-center gap-8 px-6 pb-10 pt-4 sm:pb-8 sm:pt-10 lg:grid-cols-2 lg:gap-12">
         <div>
-          <h1 className="text-4xl font-bold leading-[1.15] tracking-tight text-ink sm:text-5xl">
-            Track every application,
-            <br />
+          <h1 className="text-[34px] font-bold leading-[1.15] tracking-tight text-ink sm:text-5xl">
+            Track every application,{" "}
+            <br className="hidden sm:inline" />
             land your dream role
           </h1>
-          <p className="mt-5 max-w-md text-[17px] leading-relaxed text-ink2">
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink2 sm:mt-5 sm:text-[17px]">
             The modern way to manage your job search. Stay organized, never miss
             a follow-up, and move your career forward with confidence.
           </p>
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <Link
               href="/signup"
-              className="inline-block rounded-lg bg-ink px-6 py-3 text-base font-semibold text-white transition hover:opacity-90"
+              className="flex h-[50px] w-full items-center justify-center rounded-xl bg-ink text-base font-semibold text-white transition hover:opacity-90 sm:inline-flex sm:h-auto sm:w-auto sm:rounded-lg sm:px-6 sm:py-3"
             >
               Get Started — It&apos;s Free
             </Link>
-            <p className="mt-4 text-sm text-ink3">
+            <p className="mt-3 text-center text-[13px] text-ink3 sm:mt-4 sm:text-left sm:text-sm">
               Already have an account?{" "}
               <Link
                 href="/login"
@@ -101,14 +101,38 @@ export default async function Home() {
             style={{ width: 120, height: 6, left: 40, top: 300 }}
           />
         </div>
+
+        {/* Smaller version of the same visual for phones and tablets */}
+        <div className="relative mx-auto h-[220px] w-[342px] max-w-full lg:hidden">
+          <div
+            className="absolute rounded-xl bg-sidebar"
+            style={{ width: 190, height: 190, left: 26, top: 14 }}
+          />
+          <div
+            className="absolute rounded-md bg-hover"
+            style={{ width: 130, height: 130, left: 150, top: 62 }}
+          />
+          <div
+            className="absolute rounded-sm bg-ink"
+            style={{ width: 58, height: 58, left: 60, top: 146 }}
+          />
+          <div
+            className="absolute rounded-full bg-line2"
+            style={{ width: 12, height: 12, left: 268, top: 46 }}
+          />
+          <div
+            className="absolute rounded-sm bg-line"
+            style={{ width: 96, height: 6, left: 26, top: 210 }}
+          />
+        </div>
       </section>
 
       {/* Features — 2×2 grid */}
-      <section className="mx-auto max-w-6xl px-6 pb-24 pt-8">
-        <div className="grid gap-4 sm:grid-cols-2">
+      <section className="mx-auto max-w-6xl px-6 pb-14 sm:pb-24 sm:pt-8">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
           {FEATURES.map((f) => (
-            <div key={f.title} className="rounded-md bg-sidebar p-4">
-              <span className="grid h-9 w-9 place-items-center rounded-sm bg-ink text-white">
+            <div key={f.title} className="rounded-xl bg-sidebar p-4 sm:rounded-md">
+              <span className="grid h-9 w-9 place-items-center rounded-md bg-ink text-white sm:rounded-sm">
                 <f.Icon className="h-[18px] w-[18px]" strokeWidth={2} />
               </span>
               <h3 className="mt-3 text-[15px] font-semibold text-ink">

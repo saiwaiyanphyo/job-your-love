@@ -6,20 +6,46 @@ import { FormSubmit } from "./FormSubmit";
 
 const labelCls = "text-xs font-medium text-ink2";
 const inputCls =
-  "w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink outline-none placeholder:text-ink3 focus:border-ink";
+  "w-full rounded-[10px] border border-line bg-white px-3 py-2.5 text-[13px] text-ink outline-none placeholder:text-ink3 focus:border-ink md:rounded-lg md:text-sm";
 
 function Field({
   label,
+  wide,
   children,
 }: {
   label: string;
+  /** Span both columns on desktop. */
+  wide?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-1.5">
+    <div className={`space-y-1.5 ${wide ? "md:col-span-2" : ""}`}>
       <label className={labelCls}>{label}</label>
       {children}
     </div>
+  );
+}
+
+/**
+ * On mobile each group is its own titled card; on desktop the cards dissolve
+ * into one continuous two-column grid.
+ */
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-xl border border-line bg-white p-4 md:rounded-none md:border-0 md:bg-transparent md:p-0">
+      <h3 className="mb-3.5 text-[11px] font-semibold uppercase tracking-wide text-ink3 md:hidden">
+        {title}
+      </h3>
+      <div className="grid gap-3.5 md:grid-cols-2 md:gap-x-5 md:gap-y-4">
+        {children}
+      </div>
+    </section>
   );
 }
 
@@ -35,8 +61,8 @@ export function ApplicationForm({
   const d = initial ?? {};
 
   return (
-    <form action={action} className="space-y-6">
-      <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+    <form action={action} className="space-y-[18px] md:space-y-5">
+      <Section title="Role">
         <Field label="Company">
           <input
             name="company"
@@ -70,6 +96,9 @@ export function ApplicationForm({
             className={inputCls}
           />
         </Field>
+      </Section>
+
+      <Section title="Status & Dates">
         <Field label="Status">
           <select name="status" defaultValue={d.status ?? "applied"} className={inputCls}>
             {STATUSES.map((s) => (
@@ -87,6 +116,17 @@ export function ApplicationForm({
             className={inputCls}
           />
         </Field>
+        <Field label="Next Follow-up">
+          <input
+            type="date"
+            name="follow_up"
+            defaultValue={d.follow_up}
+            className={inputCls}
+          />
+        </Field>
+      </Section>
+
+      <Section title="Source">
         <Field label="Job Posting URL">
           <input
             type="text"
@@ -105,27 +145,30 @@ export function ApplicationForm({
             className={inputCls}
           />
         </Field>
-      </div>
+      </Section>
 
-      <Field label="Job Description / Notes">
-        <textarea
-          name="description"
-          rows={4}
-          defaultValue={d.description}
-          placeholder="Add notes about the role, requirements, or anything else to remember..."
-          className={`${inputCls} resize-y`}
-        />
-      </Field>
-
-      <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
-        <Field label="Next Follow-up">
-          <input
-            type="date"
-            name="follow_up"
-            defaultValue={d.follow_up}
-            className={inputCls}
+      <Section title="Details">
+        <Field label="Job Description" wide>
+          <textarea
+            name="description"
+            rows={4}
+            defaultValue={d.description}
+            placeholder="Paste the job description..."
+            className={`${inputCls} resize-y`}
           />
         </Field>
+        <Field label="Notes" wide>
+          <textarea
+            name="notes"
+            rows={3}
+            defaultValue={d.notes}
+            placeholder="Add notes about the role, requirements, or anything else to remember..."
+            className={`${inputCls} resize-y`}
+          />
+        </Field>
+      </Section>
+
+      <Section title="Contact">
         <Field label="Contact Name">
           <input
             name="contact_name"
@@ -151,16 +194,19 @@ export function ApplicationForm({
             className={inputCls}
           />
         </Field>
-      </div>
+      </Section>
 
-      <div className="flex items-center justify-end gap-2 border-t border-line pt-5">
+      <div className="flex items-center gap-2.5 md:justify-end md:gap-2 md:border-t md:border-line md:pt-5">
         <Link
           href="/dashboard/applications"
-          className="rounded-lg px-4 py-2 text-[13px] font-medium text-ink2 hover:bg-hover hover:text-ink"
+          className="flex h-[46px] flex-1 items-center justify-center rounded-xl border border-line bg-white text-sm font-medium text-ink md:h-auto md:flex-none md:rounded-lg md:border-0 md:bg-transparent md:px-4 md:py-2 md:text-[13px] md:text-ink2 md:hover:bg-hover md:hover:text-ink"
         >
           Cancel
         </Link>
-        <FormSubmit label={submitLabel} />
+        <FormSubmit
+          label={submitLabel}
+          className="h-[46px] flex-1 rounded-xl text-sm font-semibold md:h-auto md:flex-none md:rounded-lg md:px-4 md:py-2 md:text-[13px] md:font-medium"
+        />
       </div>
     </form>
   );
