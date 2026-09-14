@@ -2,9 +2,13 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { JobEntry, Tracker } from "@/lib/types";
+import { getDB, now, parseJson } from "@/lib/db";
+import type { ApplicationData, JobEntry, Tracker } from "@/lib/types";
 
 export const ACTIVE_TRACKER_COOKIE = "active_tracker";
+
+// Auth is Supabase; all app data lives in D1. D1 has no row-level security,
+// so every query below must be scoped to the signed-in user's id.
 
 export async function getUser() {
   const supabase = await createClient();
@@ -20,26 +24,73 @@ export async function requireUser() {
   return { supabase, user };
 }
 
+type TrackerRow = Omit<Tracker, "columns"> & { columns: string };
+type EntryRow = Omit<JobEntry, "data"> & { data: string };
+
+export function toTracker(row: TrackerRow): Tracker {
+  return { ...row, columns: parseJson<unknown[]>(row.columns, []) };
+}
+
+export function toEntry(row: EntryRow): JobEntry {
+  return { ...row, data: parseJson<ApplicationData>(row.data, {}) };
+}
+
 /** All of the user's trackers, most-recently-updated first. */
 export async function getAllTrackers(): Promise<Tracker[]> {
-  const { supabase } = await requireUser();
-  const { data } = await supabase
-    .from("trackers")
-    .select("*")
-    .order("updated_at", { ascending: false });
-  return (data ?? []) as Tracker[];
+  const { user } = await requireUser();
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT * FROM trackers WHERE user_id = ? ORDER BY updated_at DESC"
+    )
+    .bind(user.id)
+    .all<TrackerRow>();
+  return results.map(toTracker);
 }
 
 /** Number of applications per tracker id, for the user. */
 export async function getTrackerCounts(): Promise<Record<string, number>> {
-  const { supabase } = await requireUser();
-  const { data } = await supabase.from("job_entries").select("tracker_id");
-  const counts: Record<string, number> = {};
-  for (const row of data ?? []) {
-    const id = (row as { tracker_id: string }).tracker_id;
-    counts[id] = (counts[id] ?? 0) + 1;
-  }
-  return counts;
+  const { user } = await requireUser();
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT tracker_id, COUNT(*) AS n FROM job_entries WHERE user_id = ? GROUP BY tracker_id"
+    )
+    .bind(user.id)
+    .all<{ tracker_id: string; n: number }>();
+  return Object.fromEntries(results.map((r) => [r.tracker_id, r.n]));
+}
+
+/** Insert a tracker for the user and return it. */
+export async function insertTracker(
+  userId: string,
+  name: string,
+  columns: unknown[]
+): Promise<Tracker> {
+  const db = await getDB();
+  const ts = now();
+  const tracker: Tracker = {
+    id: crypto.randomUUID(),
+    user_id: userId,
+    name,
+    columns,
+    created_at: ts,
+    updated_at: ts,
+  };
+  await db
+    .prepare(
+      "INSERT INTO trackers (id, user_id, name, columns, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
+    )
+    .bind(
+      tracker.id,
+      userId,
+      name,
+      JSON.stringify(columns),
+      ts,
+      ts
+    )
+    .run();
+  return tracker;
 }
 
 /**
@@ -51,14 +102,8 @@ export async function getActiveTracker(): Promise<Tracker> {
   const trackers = await getAllTrackers();
 
   if (trackers.length === 0) {
-    const { supabase, user } = await requireUser();
-    const { data, error } = await supabase
-      .from("trackers")
-      .insert({ user_id: user.id, name: "My Job Search", columns: [] })
-      .select("*")
-      .single();
-    if (error) throw new Error(error.message);
-    return data as Tracker;
+    const { user } = await requireUser();
+    return insertTracker(user.id, "My Job Search", []);
   }
 
   const cookieStore = await cookies();
@@ -68,29 +113,33 @@ export async function getActiveTracker(): Promise<Tracker> {
 
 /** Whether the user already has a tracker (used to gate onboarding). */
 export async function hasTracker(): Promise<boolean> {
-  const { supabase } = await requireUser();
-  const { count } = await supabase
-    .from("trackers")
-    .select("id", { count: "exact", head: true });
-  return (count ?? 0) > 0;
+  const { user } = await requireUser();
+  const db = await getDB();
+  const row = await db
+    .prepare("SELECT 1 FROM trackers WHERE user_id = ? LIMIT 1")
+    .bind(user.id)
+    .first();
+  return row !== null;
 }
 
 export async function getEntries(trackerId: string): Promise<JobEntry[]> {
-  const { supabase } = await requireUser();
-  const { data } = await supabase
-    .from("job_entries")
-    .select("*")
-    .eq("tracker_id", trackerId)
-    .order("created_at", { ascending: false });
-  return (data ?? []) as JobEntry[];
+  const { user } = await requireUser();
+  const db = await getDB();
+  const { results } = await db
+    .prepare(
+      "SELECT * FROM job_entries WHERE tracker_id = ? AND user_id = ? ORDER BY created_at DESC"
+    )
+    .bind(trackerId, user.id)
+    .all<EntryRow>();
+  return results.map(toEntry);
 }
 
 export async function getEntry(id: string): Promise<JobEntry | null> {
-  const { supabase } = await requireUser();
-  const { data } = await supabase
-    .from("job_entries")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-  return (data as JobEntry) ?? null;
+  const { user } = await requireUser();
+  const db = await getDB();
+  const row = await db
+    .prepare("SELECT * FROM job_entries WHERE id = ? AND user_id = ?")
+    .bind(id, user.id)
+    .first<EntryRow>();
+  return row ? toEntry(row) : null;
 }

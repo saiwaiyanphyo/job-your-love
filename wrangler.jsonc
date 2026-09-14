@@ -12,7 +12,19 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+
+  // App data (trackers, applications, resumes). Auth stays on Supabase.
+  // Schema lives in ./migrations — apply with:
+  //   npx wrangler d1 migrations apply job-your-love --remote
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "job-your-love",
+      "database_id": "23923c94-d1b7-4cc7-a4e9-e05f587b31a7",
+      "migrations_dir": "migrations"
+    }
+  ]
 
   // Public env values can be added here under "vars".
   // Secrets (e.g. service role keys, if ever used) should be added with:

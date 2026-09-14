@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/data";
+import { getDB, now } from "@/lib/db";
 import {
   emptyResumeData,
   newItemId,
@@ -84,24 +85,23 @@ function sanitizeResumeData(input: unknown): ResumeData {
 }
 
 export async function createResume() {
-  const { supabase, user } = await requireUser();
-  const { data, error } = await supabase
-    .from("resumes")
-    .insert({
-      user_id: user.id,
-      title: "Untitled Resume",
-      data: emptyResumeData(),
-    })
-    .select("id")
-    .single();
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  const id = crypto.randomUUID();
+  const ts = now();
+  const db = await getDB();
+  await db
+    .prepare(
+      "INSERT INTO resumes (id, user_id, title, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
+    )
+    .bind(id, user.id, "Untitled Resume", JSON.stringify(emptyResumeData()), ts, ts)
+    .run();
 
   revalidatePath("/dashboard/resumes");
-  redirect(`/dashboard/resumes/${data.id}`);
+  redirect(`/dashboard/resumes/${id}`);
 }
 
 export async function saveResume(id: string, title: string, dataJson: string) {
-  const { supabase } = await requireUser();
+  const { user } = await requireUser();
 
   let parsed: unknown = {};
   try {
@@ -111,20 +111,31 @@ export async function saveResume(id: string, title: string, dataJson: string) {
   }
 
   const cleanTitle = title.trim().slice(0, 200) || "Untitled Resume";
-  const { error } = await supabase
-    .from("resumes")
-    .update({ title: cleanTitle, data: sanitizeResumeData(parsed) })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  const db = await getDB();
+  await db
+    .prepare(
+      "UPDATE resumes SET title = ?, data = ?, updated_at = ? WHERE id = ? AND user_id = ?"
+    )
+    .bind(
+      cleanTitle,
+      JSON.stringify(sanitizeResumeData(parsed)),
+      now(),
+      id,
+      user.id
+    )
+    .run();
 
   revalidatePath("/dashboard/resumes");
   revalidatePath(`/dashboard/resumes/${id}`);
 }
 
 export async function deleteResume(id: string) {
-  const { supabase } = await requireUser();
-  const { error } = await supabase.from("resumes").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  const db = await getDB();
+  await db
+    .prepare("DELETE FROM resumes WHERE id = ? AND user_id = ?")
+    .bind(id, user.id)
+    .run();
   revalidatePath("/dashboard/resumes");
   redirect("/dashboard/resumes");
 }

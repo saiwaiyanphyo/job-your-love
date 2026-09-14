@@ -7,7 +7,9 @@ import {
   ACTIVE_TRACKER_COOKIE,
   requireUser,
   getActiveTracker,
+  insertTracker,
 } from "@/lib/data";
+import { getDB, now } from "@/lib/db";
 import { extractApplicationFromEmail } from "@/lib/ai/extract-application";
 import { getTemplate } from "@/lib/templates";
 import type { ApplicationData, StatusId } from "@/lib/types";
@@ -31,51 +33,62 @@ async function setActiveCookie(id: string) {
 // Trackers (users can have several; one is active at a time)
 // ---------------------------------------------------------------------------
 export async function createTrackerFromTemplate(formData: FormData) {
-  const { supabase, user } = await requireUser();
+  const { user } = await requireUser();
   const templateKey = String(formData.get("template") ?? "job-search");
   const name = String(formData.get("name") ?? "").trim();
   const template = getTemplate(templateKey);
 
-  const { data, error } = await supabase
-    .from("trackers")
-    .insert({
-      user_id: user.id,
-      name: name || template.name,
-      columns: template.statuses,
-    })
-    .select("id")
-    .single();
-  if (error) throw new Error(error.message);
+  const tracker = await insertTracker(
+    user.id,
+    name || template.name,
+    template.statuses
+  );
 
-  await setActiveCookie(data.id);
+  await setActiveCookie(tracker.id);
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
 
 export async function setActiveTracker(id: string) {
-  await requireUser();
+  const { user } = await requireUser();
+  const db = await getDB();
+  const owned = await db
+    .prepare("SELECT 1 FROM trackers WHERE id = ? AND user_id = ?")
+    .bind(id, user.id)
+    .first();
+  if (!owned) throw new Error("Tracker not found.");
   await setActiveCookie(id);
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
 
 export async function renameTracker(id: string, name: string) {
-  const { supabase } = await requireUser();
+  const { user } = await requireUser();
   const clean = name.trim();
   if (!clean) return;
-  const { error } = await supabase
-    .from("trackers")
-    .update({ name: clean })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  const db = await getDB();
+  await db
+    .prepare(
+      "UPDATE trackers SET name = ?, updated_at = ? WHERE id = ? AND user_id = ?"
+    )
+    .bind(clean, now(), id, user.id)
+    .run();
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/profile");
 }
 
 export async function deleteTracker(id: string) {
-  const { supabase } = await requireUser();
-  const { error } = await supabase.from("trackers").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  const db = await getDB();
+  // Delete entries explicitly rather than relying on FK cascade.
+  await db.batch([
+    db
+      .prepare("DELETE FROM job_entries WHERE tracker_id = ? AND user_id = ?")
+      .bind(id, user.id),
+    db
+      .prepare("DELETE FROM trackers WHERE id = ? AND user_id = ?")
+      .bind(id, user.id),
+  ]);
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/profile");
 }
@@ -113,29 +126,36 @@ function readApplication(formData: FormData): ApplicationData {
 }
 
 export async function createApplication(formData: FormData) {
-  const { supabase, user } = await requireUser();
+  const { user } = await requireUser();
   const tracker = await getActiveTracker();
   const data = readApplication(formData);
+  const ts = now();
 
-  const { error } = await supabase.from("job_entries").insert({
-    tracker_id: tracker.id,
-    user_id: user.id,
-    data,
-  });
-  if (error) throw new Error(error.message);
+  const db = await getDB();
+  await db
+    .prepare(
+      "INSERT INTO job_entries (id, tracker_id, user_id, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
+    )
+    .bind(crypto.randomUUID(), tracker.id, user.id, JSON.stringify(data), ts, ts)
+    .run();
 
   revalidatePath("/dashboard");
   redirect("/dashboard/applications");
 }
 
+async function writeEntryData(id: string, userId: string, data: ApplicationData) {
+  const db = await getDB();
+  await db
+    .prepare(
+      "UPDATE job_entries SET data = ?, updated_at = ? WHERE id = ? AND user_id = ?"
+    )
+    .bind(JSON.stringify(data), now(), id, userId)
+    .run();
+}
+
 export async function updateApplication(id: string, formData: FormData) {
-  const { supabase } = await requireUser();
-  const data = readApplication(formData);
-  const { error } = await supabase
-    .from("job_entries")
-    .update({ data })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  await writeEntryData(id, user.id, readApplication(formData));
 
   revalidatePath("/dashboard");
   revalidatePath(`/dashboard/applications/${id}`);
@@ -148,19 +168,18 @@ export async function updateStatus(
   current: ApplicationData,
   status: StatusId
 ) {
-  const { supabase } = await requireUser();
-  const { error } = await supabase
-    .from("job_entries")
-    .update({ data: { ...current, status } })
-    .eq("id", id);
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  await writeEntryData(id, user.id, { ...current, status });
   revalidatePath("/dashboard");
 }
 
 export async function deleteApplication(id: string) {
-  const { supabase } = await requireUser();
-  const { error } = await supabase.from("job_entries").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  const { user } = await requireUser();
+  const db = await getDB();
+  await db
+    .prepare("DELETE FROM job_entries WHERE id = ? AND user_id = ?")
+    .bind(id, user.id)
+    .run();
   revalidatePath("/dashboard");
 }
 
