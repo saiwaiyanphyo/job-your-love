@@ -22844,6 +22844,385 @@
           "name": "Tab Bar"
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "c59CH",
+      "x": 23760,
+      "y": -860,
+      "name": "Favicon",
+      "fill": "#f2f1ee",
+      "cornerRadius": 16,
+      "gap": 48,
+      "padding": 40,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "l1x3v",
+          "name": "Favicon Mark",
+          "reusable": true,
+          "width": 512,
+          "height": 512,
+          "fill": "#0f0f0f",
+          "cornerRadius": 146,
+          "layout": "vertical",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "JZiAw",
+              "name": "J",
+              "fill": "#ffffff",
+              "content": "J",
+              "lineHeight": 1,
+              "fontFamily": "Inter",
+              "fontSize": 224,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "a2UCyq",
+          "name": "Tab Preview",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "NIVFZ",
+              "name": "Browser Tab",
+              "width": 220,
+              "height": 40,
+              "fill": "#e8e7e4",
+              "cornerRadius": [
+                8,
+                8,
+                0,
+                0
+              ],
+              "gap": 8,
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "KWx3J",
+                  "type": "ref",
+                  "ref": "l1x3v",
+                  "name": "Tab Favicon",
+                  "width": 16,
+                  "height": 16,
+                  "cornerRadius": 4,
+                  "clip": true,
+                  "descendants": {
+                    "JZiAw": {
+                      "fontSize": 11
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "kyHZX",
+                  "name": "Tab Title",
+                  "fill": "#3a3a3a",
+                  "content": "Job Your Love",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "yCJk8",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "browser tab",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ieWoo",
+          "name": "Size 192",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "vTEjt",
+              "type": "ref",
+              "ref": "l1x3v",
+              "name": "Favicon 192",
+              "width": 192,
+              "height": 192,
+              "cornerRadius": 55,
+              "clip": true,
+              "descendants": {
+                "JZiAw": {
+                  "fontSize": 84
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "ZzVEl",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "192px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RG50U",
+          "name": "Size 64",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "A39Ie",
+              "type": "ref",
+              "ref": "l1x3v",
+              "name": "Favicon 64",
+              "width": 64,
+              "height": 64,
+              "cornerRadius": 18,
+              "clip": true,
+              "descendants": {
+                "JZiAw": {
+                  "fontSize": 28
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "ra5QJ",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "64px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Oq63g",
+          "name": "Size 32",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "D4MXsh",
+              "type": "ref",
+              "ref": "l1x3v",
+              "name": "Favicon 32",
+              "width": 32,
+              "height": 32,
+              "cornerRadius": 7,
+              "clip": true,
+              "descendants": {
+                "JZiAw": {
+                  "fontSize": 20
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "ELwaP",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "32px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ZJQag",
+          "name": "Size 16",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "tAyA0",
+              "type": "ref",
+              "ref": "l1x3v",
+              "name": "Favicon 16",
+              "width": 16,
+              "height": 16,
+              "cornerRadius": 4,
+              "clip": true,
+              "descendants": {
+                "JZiAw": {
+                  "fontSize": 11
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "PXGNr",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "16px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "N8Ivc",
+      "x": 25277,
+      "y": -860,
+      "name": "Favicon — Mobile (Maskable)",
+      "fill": "#f2f1ee",
+      "cornerRadius": 16,
+      "gap": 48,
+      "padding": 40,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "XuKB0",
+          "name": "Maskable Icon",
+          "reusable": true,
+          "width": 512,
+          "height": 512,
+          "fill": "#0f0f0f",
+          "layout": "vertical",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "e5JDb",
+              "name": "J",
+              "fill": "#ffffff",
+              "content": "J",
+              "lineHeight": 1,
+              "fontFamily": "Inter",
+              "fontSize": 180,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "oDvom",
+          "name": "Safe Zone Preview",
+          "width": 512,
+          "height": 512,
+          "layout": "none",
+          "children": [
+            {
+              "id": "gCIKv",
+              "type": "ref",
+              "ref": "XuKB0",
+              "name": "Base"
+            },
+            {
+              "type": "ellipse",
+              "id": "YUXO5",
+              "x": 51.2,
+              "y": 51.2,
+              "name": "Safe Zone (80%25 circle)",
+              "width": 409.6,
+              "height": 409.6,
+              "stroke": "#ff3b30",
+              "strokeWidth": 3
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "IbL0w",
+          "name": "icon.png 192",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "h0qEn",
+              "type": "ref",
+              "ref": "XuKB0",
+              "name": "Android Icon",
+              "width": 192,
+              "height": 192,
+              "descendants": {
+                "e5JDb": {
+                  "fontSize": 68
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "Bitce",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "icon.png — 192px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Mrmn2",
+          "name": "apple-icon.png 180",
+          "layout": "vertical",
+          "gap": 8,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "sXJCY",
+              "type": "ref",
+              "ref": "XuKB0",
+              "name": "Apple Icon",
+              "width": 180,
+              "height": 180,
+              "descendants": {
+                "e5JDb": {
+                  "fontSize": 64
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "E27y4k",
+              "name": "Label",
+              "fill": "#6b6b6b",
+              "content": "apple-icon.png — 180px",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
